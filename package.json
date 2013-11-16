@@ -1,0 +1,16 @@
+{
+  "name": "GuasapChat",
+  "version": "0.0.1",
+  "private": true,
+ 
+   "dependencies": {
+    "express": "3.4.4",
+    "socket.io": "0.9.16",
+    "ntwitter": "*"
+  },
+  
+  "engines": {
+    "node": "0.10.17",
+    "npm": "1.3.9"
+  }
+}

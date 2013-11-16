@@ -1,0 +1,17 @@
+<!-- <!doctype html> -->
+<html>
+<head>
+    <title>Pruebas - Javascript</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script type="text/javascript" src="js/pdfobject.js"></script>
+    <script type="text/javascript">
+      $( document ).ready(function() {
+        var myPDF = new PDFObject({ url: "docs/LigaFantastica2013-2014.pdf" }).embed();
+      });
+    </script>
+</head>
+<body>
+    <p>It appears you don't have Adobe Reader or PDF support in this web
+    browser. <a href="docs/LigaFantastica2013-2014.pdf">Click here to download the PDF</a></p>
+</body>
+</html>

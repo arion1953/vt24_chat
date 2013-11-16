@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>Guasap - Chat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" type="text/css" href="css/estilos.css" />
+</head>
+<body>
+  <header>
+    <h1>Guasap-Chat</h1>
+    <h3>Liga Fantástica Marca - Sitio oficial de la Peña "La Mosca Gao"</h3>
+  </header>
+
+  <section id="contenido">
+    <section id="principal">
+      <article id="chat">
+        <ul id='chatmessages'>
+          
+        </ul>  
+      </article>
+      <article id="message">
+        <form id="send-message">
+          <div class='center'>
+            <h4>Escribe tu mensaje</h4>
+            <textarea id="message-to-send" name="message-to-send"></textarea>
+          </div>
+          <div class='center'>
+            <input type="submit" id="enviar-mensaje" class="fade center" value="Enviar mensaje" />
+          </div>
+        </form>
+      </article>
+      <article id="login">
+        <form id="set-nickname">
+          <div class='center'>
+            <label for "nickname" >Nickname:</label>
+            <input type="text" id="nickname" name="nickname" />
+            <input type="submit" id="enviar" class="fade center" value="Enviar" />
+          </div>
+        </form>
+        <div id="comunicados" class='center'></div>
+        <button id='desconectar' class='centerblock' type="button">Desconectar</button>   
+      </article>
+  
+    </section>  <!-- principal -->
+    <aside>
+      <article id="info">
+        <h3 class='center'>Conectados</h3>
+        <hr class='centerblock' />
+        <ul id='conexiones' class='centerblock'>
+          <!-- insertamos con jQuery los usuarios conectados -->
+        </ul>
+      </article>
+      <article id="pdfliga">
+        <button id='btnpdf' type="button">Consulta cuadrante de la Peña</button>  
+      </article>
+      <article id="diversos">
+        <script type="text/javascript" src="http://www.marca.com/widgets/launcher.html?c=Gris&w=300&h=570&cid=WID33801&s_kw=futbol" id="wm001001304"></script> 
+      </article>   
+    </aside>
+  </section> <!-- contenido -->
+  <footer>
+    <!-- Prueba de chat con NODEJS/EXPRESS <a href="http://twitter.com/arion1953" target="_blank"> @arion1953</a> -->
+    Prueba de chat con NODEJS/EXPRESS - @arion1953
+  </footer>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var coms = ["Vacio",
+                "Bienvenido al chat GUASAP, entra con tu Nick",
+                "Muy bien, ya puedes chatear con tus amigos",
+                "Has entrado como invitado",
+                "Este Nick ya está siendo utilizado, intenta con otro..."];
+
+      $( document ).ready(function() {
+        // set focus
+        if($('input#nickname').is(":visible")) {
+          $("input#nickname").focus();
+        }
+      });
+      // formatear hora de conexion
+      function formTime(conntime)
+      {
+        var date = new Date(conntime);
+        console.log(date.getTimezoneOffset());
+        var hh = date.getHours();
+        var mm = date.getMinutes();
+        if (hh < 10) {hh = "0"+hh;};
+        if (mm < 10) {mm = "0"+mm;};
+        var t = hh+":"+mm;
+        return t;
+      };
+      // peticion de conexion
+      var socket = io.connect();
+      socket.on('comunicacion', function (data) {
+        console.log(coms[data.idcom]);
+        $( "#comunicados" ).text( coms[data.idcom] );
+        if (data.idcom == 2) {
+          $( "form#set-nickname" ).hide( "slow" );
+          $( "button#desconectar" ).css("display", "block");
+          $( "form#send-message" ).css("display", "block");
+          $( "textarea#message-to-send").focus();
+        };
+      });
+      // insertamos con jQuery los usuarios conectados
+      socket.on('usuarios', function (data) {
+        $("ul#conexiones").empty();
+        for (var i = 0; i < data.nickdata.length; i++) {
+          var conectado = data.nickdata[i][1];
+          $('ul#conexiones').append("<li>" + "<span class='userconn'>" + data.nickdata[i][0] + "</span>" +
+                                  "<span class='timeconn'>" + formTime(data.nickdata[i][1]) + "</span>" + "</li>");
+          }
+        if (data.sound == 'yes') {
+          $('#chatConn')[0].play();
+        };
+      });
+      // enviamos nickname al servidor
+      var nickName = $('#nickname');
+      var setNicknameForm = $('#set-nickname');
+      setNicknameForm.submit(function(event) {
+          if(nickName.val().length == 0) {
+            nickName.val('invitado');
+          };
+          event.preventDefault();
+          socket.emit('nickname', nickName.val());
+          $( "#comunicados" ).text( coms[data.idcom] );
+      });
+      // enviamos mensaje al servidor
+      $("#send-message").submit(function(event) {
+        event.preventDefault();
+        socket.emit('newmessage', $('#message-to-send').val());
+        $('#message-to-send').val('').focus();
+      });
+      // recibimos mensajes del servidor
+      socket.on('newmessage', function (data) {
+        // al llegar a cien mensajes borramos el ultimo
+        if($('ul#chatmessages').children().length == 100) {
+          $('ul#chatmessages > li').first().remove();
+        }
+        // adaptamos hora UTC del servidor en GMT+1        
+        var d = new Date(data.time);
+        time = d.toLocaleTimeString();
+        // insertamos mensaje en la ultima posicion
+        $('ul#chatmessages').append('<li>' + time + ' - ' + '<span class="evidencia">' +
+                                  data.nick + '</span>' + ' : ' + data.text + '</li>');
+        $('#chat').animate({scrollTop: $('#chat')[0].scrollHeight});
+        $('#chatMsg')[0].play();
+      });
+      // desconectamos del servidor
+      $('#desconectar').click(function(event) {
+          socket.disconnect();
+          location.reload();
+          $( "#comunicados" ).text( coms[1] );
+          $( "form#set-nickname" ).show();
+          $( "button#desconectar" ).css("display", "none");
+          $( "#nickname").val(''); 
+          $( "form#send-message" ).css("display", "none");
+      });
+      // Mostrar archivo PDF
+      $('#btnpdf').click(function(event) {
+        window.open("cuadrantepdf.html");
+      });
+    </script>
+
+  <audio id="chatMsg">
+      <source src="audio/whistle.ogg" type="audio/ogg">
+      <source src="audio/whistle.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="chatConn">
+      <source src="audio/click.ogg" type="audio/ogg">
+      <source src="audio/click.mp3" type="audio/mpeg">
+  </audio>    
+</body>
+</html>

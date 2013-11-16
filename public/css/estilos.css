@@ -1,0 +1,224 @@
+/* RESET Based on Eric Meyer’s “Reset CSS” 2.0 */
+* {
+        margin: 0;
+        padding: 0;
+    border: 0;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+display: block;
+}
+ol, ul {
+    list-style: none;
+}
+audio, iframe, img, video {
+    max-width: 100%;
+}
+/* Estilos especificos del sitio */
+@font-face {
+    font-family: 'Chalet';
+    src: url('../fonts/Chalet.eot');
+    src: url('../fonts/Chalet.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/Chalet.woff') format('woff'),
+         url('../fonts/Chalet.ttf') format('truetype'),
+         url('../fonts/Chalet.svg#Chalet') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* 16px = 12pt = 100% = 1em */
+body {
+        background: #212121 url(../imagenes/fondo.jpg);
+        color: #F98145;
+        font-family: "Chalet", Helvetica, Verdana;
+        font-size: 1em;
+}
+header, section#contenido, footer {
+    /*background: #000;*/
+    margin: 10px auto;
+    max-width: 80%;
+    text-align: center;
+    padding: 0.2em;
+}
+section#principal, aside {
+    /*background: #1E6381;*/
+    border-radius: 0.5em;
+    display: inline-block;
+    margin: 0 auto;
+    max-width: 100%;
+    padding: 0.25em;
+    vertical-align: top;
+    width: 64%;
+}
+aside {
+    width: 31%;
+}
+article {
+    background: #1e6381;
+    border-radius: 0.5em;
+    display: inline-block;
+    margin: 0 auto;
+    max-width: 100%;
+    min-height: 550px;
+    padding: 0.5em;
+    text-align: justify;
+    vertical-align: top;
+    width: 90%;
+}
+article#info,
+article#pdfliga {
+    min-height: 0px;
+    margin-bottom: 5px;
+    text-align: center;   
+}
+iframe#iframe_wMarca{
+    margin: 0 auto;
+    display: block;
+}
+article#chat{
+    font-family: Helvetica, Verdana;
+    font-size: 0.8em;
+    color: #fff;
+    min-height: 300px;
+    max-height: 300px;
+    margin-bottom: 4px;
+    overflow-y:auto;
+}
+article#chat > ul {
+    width: 95%;
+}
+article#chat > ul >li {
+    max-width: 98%;
+    overflow:auto;    
+}
+ul#conexiones > li > span  {
+/*    margin-left: 22%;*/
+    /*width: 40%;*/
+}
+ul#conexiones > li {
+/*    text-align: right;*/
+}
+span.userconn {
+    float: left;
+    margin-left: 25px;
+    clear: left;
+    /*margin-left: 22%;*/
+    /*width: 40%;*/
+}
+span.timeconn {
+    float: right;
+    margin-right: 25px;
+    clear: right;
+}
+article#message{
+    min-height: 125px;
+    max-height: 125px;
+    margin-bottom: 4px;
+/*    display: none;*/
+}
+article#login{
+    min-height: 85px;    
+}
+form#set-nickname {
+    padding: 5px;
+    padding-bottom: 15px;
+}
+form#send-message {
+    display: none;
+}
+button#desconectar {
+    display: none;
+    margin-top: 15px;
+}
+hr {
+    width: 80%;
+    height: 5px;
+    background-color: #F98145;
+    margin: 0 auto;
+    margin-top: 10px;
+    margin-bottom: 10px; 
+}
+input#nickname,
+input[type='submit'],
+button#desconectar,
+button#btnpdf {
+    padding: 5px;
+    font-size: 15px;
+    text-shadow: 0px 1px 0px #fff;
+    outline: none;
+    background: -webkit-gradient(linear, left top, left bottom, from(#bcbcbe), to(#ffffff));
+    background: -moz-linear-gradient(top,  #bcbcbe,  #ffffff);
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border: 1px solid #717171;
+}
+button#desconectar {
+    width: 101px;
+}
+input#enviar-mensaje:focus,
+input#nickname:hover,
+input[type='submit']:hover,
+button#desconectar:hover,
+button#btnpdf:hover
+{
+    background: -webkit-gradient(linear, left bottom, left top, from(#bcbcbe), to(#ffffff));
+    background: -moz-linear-gradient(bottom,  #bcbcbe,  #ffffff);
+}
+textarea#message-to-send {
+    width: 60%;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    padding-right: 5px;
+    padding-left: 5px;
+    font-size: 15px;
+    text-shadow: 0px 1px 0px #fff;
+    outline: none;
+    background: -webkit-gradient(linear, left top, left bottom, from(#bcbcbe), to(#ffffff));
+    background: -moz-linear-gradient(top,  #bcbcbe,  #ffffff);
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border: 1px solid #717171;
+    resize: none;
+}
+a {
+}
+a:hover {
+    color: #ff6600;
+}
+.fade {
+    opacity: 1;
+    filter:alpha(opacity=10);
+    -webkit-transition:all .5s ease-in;
+    -moz-transition:all .5s ease-in;
+    -o-transition:all .5s ease-in;
+    -ms-transition:all .5s ease-in;
+    transition:all .5s ease-in;
+}
+.center {
+    text-align: center;
+}
+.left {
+    text-align: left;
+}
+.right {
+    text-align: right;
+}
+.centerblock{
+    margin-left:auto;
+    margin-right:auto;
+}
+.leftblock{
+    margin-left:auto;
+    margin-right:auto;
+}
+.rightblock{
+    margin-left:auto;
+    margin-right:auto;
+}
+.evidencia{
+    color: #F98145;
+    font-weight: bold;
+}
